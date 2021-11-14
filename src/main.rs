@@ -3,53 +3,67 @@ trait ShieldSystemFactory {
     fn create_hq(&self) -> Box<dyn HQ>;
 }
 
-trait Phalanx {
-    fn fire(&self);
-}
-
-trait HQ {
-    fn fire(&self);
-}
-
-enum SystemType {
-    Land,
-    Ship,
-}
-
-struct PhalanxEntity {}
-impl Phalanx for PhalanxEntity {
-    fn fire(&self) {
-        println!("The target was destroyed in the barrage.");
-    }
-}
-
-struct HQEntity {}
-impl HQ for HQEntity {
-    fn fire(&self) {
-        println!("Missile launched!");
-    }
-}
-
 struct LandFactory {}
 impl ShieldSystemFactory for LandFactory {
     fn create_phalanx(&self) -> Box<dyn Phalanx> {
-        Box::new(PhalanxEntity {})
+        Box::new(LandPhalanx {})
     }
 
     fn create_hq(&self) -> Box<dyn HQ> {
-        Box::new(HQEntity {})
+        Box::new(LandHQ {})
     }
 }
 
 struct ShipFactory {}
 impl ShieldSystemFactory for ShipFactory {
     fn create_phalanx(&self) -> Box<dyn Phalanx> {
-        Box::new(PhalanxEntity {})
+        Box::new(ShipPhalanx {})
     }
 
     fn create_hq(&self) -> Box<dyn HQ> {
-        Box::new(HQEntity {})
+        Box::new(ShipHQ {})
     }
+}
+
+trait Phalanx {
+    fn fire(&self);
+}
+
+struct LandPhalanx {}
+impl Phalanx for LandPhalanx {
+    fn fire(&self) {
+        println!("The target was destroyed in the barrage by LD-3000.");
+    }
+}
+
+struct ShipPhalanx {}
+impl Phalanx for ShipPhalanx {
+    fn fire(&self) {
+        println!("The target was destroyed in the barrage by PJ-1130.");
+    }
+}
+
+trait HQ {
+    fn fire(&self);
+}
+
+struct LandHQ {}
+impl HQ for LandHQ {
+    fn fire(&self) {
+        println!("Missile launched by HQ-9");
+    }
+}
+
+struct ShipHQ {}
+impl HQ for ShipHQ {
+    fn fire(&self) {
+        println!("Missile launched by HHQ-9");
+    }
+}
+
+enum SystemType {
+    Land,
+    Ship,
 }
 
 struct Factory;
